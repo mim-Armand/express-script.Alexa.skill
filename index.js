@@ -19,15 +19,15 @@ const unrecognisedResponses = [
   "Sorry, I missed that, can you run that with me again?"
 ]
 const APP_ID = process.env.APP_ID;
-const apiUrl = url.parse('https://developer.healthgraphic.com/');
-const superSecurePass = "healthHackStL_2018!"
-const fakeEmailForAPI = "bivewekub@web2mailco.com"
+const apiUrl = url.parse('https://api.healthgraphic.com/');
+const healthgraphicPass = process.env.healthgraphicPass;
+const healthgraphicEmail = process.env.healthgraphicEmail;
 
-const getToken = function(u, p){
+const getToken = function(){
   return new Promise(function(resolve, reject) {
     const postData = querystring.stringify({
-    'email': u,
-    'password': p
+    'email': healthgraphicEmail,
+    'password': healthgraphicPass
   });
   var options = {
     method: "POST",
@@ -54,6 +54,43 @@ const getToken = function(u, p){
   req.write(postData);
   req.end();
   })
+}
+
+const medicines = {
+  "Pregabalin":{
+    "sideEffects": "Drowsiness, dizziness, headache, dry mouth, nausea, constipation, and weight gain may occur. If any of these effects last or get worse, tell your doctor or pharmacist promptly.",
+
+  }
+}
+
+const getSMedicationInfo = function(medecine){
+  return new Promise(function(resolve, reject) {
+    getToken()
+    .then((token)=>{
+    var options = {
+      method: "GET",
+      hostname: apiUrl.hostname,
+      path: `/v1/medications/${medecine}`,
+      headers: {
+        'token': token
+      }
+    };
+    var req = https.request(options, function (res) {
+      var chunks = [];
+      res.on("data", function (chunk) {
+        chunks.push(chunk);
+      });
+      res.on("end", function () {
+        var body = Buffer.concat(chunks);
+        resolve (JSON.parse(body.toString()))
+      });
+      res.on('error', (e) => {
+              reject(e)
+          });
+    });
+    req.end();
+    })
+    });
 }
 
 const handlers = {
@@ -152,10 +189,14 @@ const randomInRange = function(min, max) {
     return Math.floor((Math.random() * (max - min) + min));
 }
 exports.handler = function(event, context) {
-    const alexa = Alexa.handler(event, context);
-    alexa.APP_ID = APP_ID;
-    // To enable string internationalization (i18n) features, set a resources object.
-    // alexa.resources = languageStrings;
-    alexa.registerHandlers(handlers);
-    alexa.execute();
+  getSMedicationInfo('botox')
+  .then((res)=>{
+    console.log('>>>>>>>', res)
+  })
+    // const alexa = Alexa.handler(event, context);
+    // alexa.APP_ID = APP_ID;
+    // // To enable string internationalization (i18n) features, set a resources object.
+    // // alexa.resources = languageStrings;
+    // alexa.registerHandlers(handlers);
+    // alexa.execute();
 };
