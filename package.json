@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mim-Armand/status.ctl.alexa.skill.git"
+    "url": "git+https://github.com/mim-Armand/express-skill.alexa.skill.git"
   },
   "keywords": [
     "alexa",
@@ -21,9 +21,9 @@
   ],
   "author": "mim.Armand",
   "bugs": {
-    "url": "https://github.com/mim-Armand/status.ctl.alexa.skill/issues"
+    "url": "https://github.com/mim-Armand/express-skill.alexa.skill/issues"
   },
-  "homepage": "https://github.com/mim-Armand/status.ctl.alexa.skill#readme",
+  "homepage": "https://github.com/mim-Armand/express-skill.alexa.skill#readme",
   "dependencies": {
     "alexa-sdk": "^1.0.14"
   }
