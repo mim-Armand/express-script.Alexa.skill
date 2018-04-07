@@ -3,14 +3,58 @@
 // We can use the following API:
 // https://status.ctl.io/v1/status
 'use strict';
-const Alexa = require('alexa-sdk');
+// const Alexa = require('alexa-sdk');
 const https = require('https');
+const http = require('http');
+const querystring = require('querystring');
+const url = require('url');
 
 const helloMessages = ["Hi! how can I help you today?", "Hello! what can I do for you?", "Hey there! please let me know how I may be able to help you!"]
-const reprompMessages = ["You can say for instance status, and  I'll get that information for you!", "You can ask me for the status of the services on ctl.io"]
-const unrecognisedResponses = ["What was that again?", "Sorry, I could not recognize that, can you repeat?"]
+const reprompMessages = [
+  "You can say for instance What's my medecine schedule today, or, I need help",
+  "You can ask me for the side-effects of your medecine or ask me to have your pharmacist to call you"]
+const unrecognisedResponses = [
+  "What was that again?",
+  "Sorry, I could not recognize that, can you repeat?",
+  "Sorry, I missed that, can you run that with me again?"
+]
 const APP_ID = process.env.APP_ID;
-const apiUrl = 'https://status.ctl.io/v1/status';
+const apiUrl = url.parse('https://developer.healthgraphic.com/');
+const superSecurePass = "healthHackStL_2018!"
+const fakeEmailForAPI = "bivewekub@web2mailco.com"
+
+const getToken = function(u, p){
+  return new Promise(function(resolve, reject) {
+    const postData = querystring.stringify({
+    'email': u,
+    'password': p
+  });
+  var options = {
+    method: "POST",
+    hostname: apiUrl.hostname,
+    path: "/api/v1/login",
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': Buffer.byteLength(postData)
+    }
+  };
+  var req = https.request(options, function (res) {
+    var chunks = [];
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
+    res.on("end", function () {
+      var body = Buffer.concat(chunks);
+      resolve (JSON.parse(body.toString()).token)
+    });
+    res.on('error', (e) => {
+            reject(e)
+        });
+  });
+  req.write(postData);
+  req.end();
+  })
+}
 
 const handlers = {
     'LaunchRequest': function() {
