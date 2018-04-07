@@ -1,0 +1,30 @@
+{
+  "name": "status.ctl",
+  "version": "1.0.0",
+  "description": "Status report of CTL.io cloud provider services",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mim-Armand/status.ctl.alexa.skill.git"
+  },
+  "keywords": [
+    "alexa",
+    "ctl.io",
+    "ctl",
+    "centurylink",
+    "skill",
+    "status",
+    "isdown"
+  ],
+  "author": "mim.Armand",
+  "bugs": {
+    "url": "https://github.com/mim-Armand/status.ctl.alexa.skill/issues"
+  },
+  "homepage": "https://github.com/mim-Armand/status.ctl.alexa.skill#readme",
+  "dependencies": {
+    "alexa-sdk": "^1.0.14"
+  }
+}
