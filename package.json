@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/mim-Armand/express-skill.alexa.skill#readme",
   "dependencies": {
-    "alexa-sdk": "^1.0.14"
+    "alexa-sdk": "^1.0.25"
   }
 }

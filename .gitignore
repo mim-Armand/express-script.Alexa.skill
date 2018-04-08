@@ -62,3 +62,7 @@ Archive.zip
 
 # IntelliJ
 .idea
+
+.DS_Store
+
+*.zip
