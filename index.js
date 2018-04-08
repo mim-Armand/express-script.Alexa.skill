@@ -9,9 +9,9 @@ const querystring = require('querystring');
 const url = require('url');
 
 const helloMessages = [
-  "Hi! how can I help you today?",
-  "Hello! what can I do for you?",
-  "Hi there! please let me know how I may be able to help you!"
+  "Hi! Welcome to Express Scripts! how can I help you today?",
+  "Hello! Welcome to Express Scripts! what can I do for you?",
+  "Welcome to Express Scripts! Anything I can help you with?"
 ]
 const iWillCall = [
   "Ok, I'll have somebody to call you back.",
@@ -21,7 +21,7 @@ const iWillCall = [
 ]
 const reprompMessages = [
   "You can say for instance What's my medecine schedule today, or, I need help",
-  "You can ask me what is botox for instance, or any other medicine or ask me to have your pharmacist to call you"
+  "You can ask me what is Acetaminophen for instance, or any other medicine or ask me to have your pharmacist to call you"
 ]
 const unrecognisedResponses = [
   "What was that again?",
@@ -193,19 +193,19 @@ const handlers = {
       if (intentObj.confirmationStatus !== 'DENIED') {
         // Intent is not confirmed
         let speechOutput =
-          'Should I call 911 with your information? Please say yes if it is a Medical emergency, otherwise say no and I\'ll notify your physician and other parties that you have set up in the settings.';
+          'Should I call 911? Please say yes if it is a Medical emergency, otherwise say no and I\'ll notify your physician and other parties that were set up in your account. you can also say cancel!';
         this.emit(':confirmIntent', speechOutput, shouldICallPharmacist[
           randomInRange(0, reprompMessages.length)]);
       } else {
         // Users denies the confirmation of intent. May be value of the slots are not correct.
         this.attributes.speechOutput =
-          "Ok! be careful! I alerted your phisician to give you a call, I also notified your relatives and/or other paries that was set up as emergency contacts in your account.";
+          "Ok! be careful! I alerted your physician to give you a call, I also notified your relatives and other parties that was set up as emergency contacts in your account.";
         this.emit(':tell', this.attributes.speechOutput);
       }
     } else {
       // this.response.speak("Alright! it's set up! an expert will call you back in less than 10 minutes.")
       this.attributes.speechOutput =
-        "Ok, I am calling 911 right now and transfering your information, please stay calm and breath normally. help is in the way.";
+        "Ok, I am calling 911 right now and transfering your information, please stay calm and breathe normally. help is on the way.";
       this.emit(':tell', this.attributes.speechOutput);
     }
   },
@@ -215,7 +215,7 @@ const handlers = {
       if (intentObj.confirmationStatus !== 'DENIED') {
         // Intent is not confirmed
         let speechOutput =
-          'You should take your next Fluoroquinolones pills in 4 hours, you had to take the last one 2 hours ago, have you take that one ontime?';
+          'You should take your next Fluoroquinolones pills in 4 hours, you had to take the last one 2 hours ago, have you taken that one ontime?';
         this.emit(':confirmIntent', speechOutput, shouldICallPharmacist[
           randomInRange(0, reprompMessages.length)]);
       } else {
@@ -254,7 +254,9 @@ const handlers = {
         if (intentObj.confirmationStatus !== 'CONFIRMED') {
           if (intentObj.confirmationStatus !== 'DENIED') {
             // Intent is not confirmed
-            let speechOutput = (res.response.medication.description ||
+            let speechOutput = (res.response.medication.name || '') + ' ' +
+              (
+                res.response.medication.description ||
                 'I couldn\'t find that in my database') + '. ' +
               shouldICallPharmacist[randomInRange(0, reprompMessages.length)];
             this.emit(':confirmIntent', speechOutput,
