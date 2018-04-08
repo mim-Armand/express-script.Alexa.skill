@@ -233,6 +233,11 @@ const handlers = {
   'PharmacistCall': function() {
     this.emit(':tell', iWillCall[randomInRange(0, iWillCall.length)]);
   },
+  'WhatsNext': function() {
+    this.emit(':tell',
+      'After this hackathon we all need to take a long nap, and then maybe we can relase this skill in the market place and make it available to general public!'
+    );
+  },
   'Medication': function() {
     console.log('======================== Medication')
     getSMedicationInfo(this.event.request.intent.slots.medecine.value)
